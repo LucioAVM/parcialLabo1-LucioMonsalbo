@@ -1,0 +1,1053 @@
+/*
+ * eTrabajos.c
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ *
+ *      id (autoincremental)
+ marcaBicicleta (Cadena) Validar
+ rodadoBicicleta
+ idServicio (debe existir) Validar
+ fecha (Validar d�a, mes y a�o)
+ */
+
+#include "eTrabajo.h"
+
+int eTrabajos_ObtenerID(int* trabajos_idIncremental)
+{
+	return trabajos_idIncremental = trabajos_idIncremental+1;
+}
+
+int getStringLetras(char mensaje[],char input[])
+{
+    char aux[260];
+    getString(mensaje,aux);
+    if(soloLetras(aux))
+    {
+        strcpy(input,aux);
+        return 1;
+    }
+    return 0;
+}
+
+// pasar a biblioteca nexo
+
+int validacionIdServicios(eTrabajo array[], int TAM)
+{
+	int i;
+	eTrabajo aux;
+	int retorno;
+
+	retorno = -1;
+
+
+	for (i = 0; i < TAM; i++)
+	{
+		if(array[i].isEmpty != VACIO)
+		{
+
+		}
+	}
+}
+
+//fecha (Validar d�a, mes y a�o)
+
+void fechaValidada(eTrabajo array[], int TAM, int* dia, int* mes, int *anio)
+{
+	int auxiliarDia;
+	int auxiliarMes;
+	int auxiliarAnio;
+
+	              //valida dia//
+	printf("\ningrese mes");
+	scanf("%d", &auxiliarDia);
+	while(auxiliarDia>0 && auxiliarDia<32)
+	{
+		printf("\nERROR, ingrese dia nuevamente");
+		scanf("%d", &auxiliarDia);
+	}
+	auxiliarDia = *dia;
+
+
+	              //valida mes//
+	printf("\ningrese mes");
+	scanf("%d", &auxiliarMes);
+	while(auxiliarMes>0 && auxiliarMes<13)
+	{
+		printf("\nERROR, ingrese mes nuevamente");
+		scanf("%d", &auxiliarMes);
+	}
+	auxiliarMes = *mes;
+
+
+	              //valida anio//
+	printf("\ningrese anio");
+	scanf("%d", auxiliarAnio);
+	//en 1817 se invento la bicicleta//
+	while(auxiliarAnio>1817 && auxiliarAnio<2021)
+	{
+		printf("\nERROR, ingrese anio nuevamente");
+		scanf("%d", &auxiliarAnio);
+	}
+	auxiliarAnio = *anio;
+}
+
+eTrabajo eTrabajo_HardcodearDatos(void)
+{
+	eTrabajo auxiliar;
+	int i;
+
+	//Limpieza: $250, Parche: $300, Centrado: $400, Cadena: $350
+	for (i = 0; i < 5; i++)
+	{
+		switch(i)
+		{
+		case 1:
+			auxiliar[i].descripci�n = "Limpieza";
+			auxiliar[i].precio = "250";
+			break;
+		case 2:
+			auxiliar[i].descripci�n = "Parche";
+			auxiliar[i].precio = "300";
+			break;
+		case 3:
+			auxiliar[i].descripci�n = "Centrado";
+			auxiliar[i].precio = "400";
+			break;
+		case 4:
+			auxiliar[i].descripci�n = "Cadena";
+			auxiliar[i].precio = "350";
+			break;
+		}
+	}
+	return auxiliar;
+}
+
+int eTrabajo_Alta(eTrabajo array[], int TAM)
+{
+	int retorno = 0;
+	eTrabajo auxiliarTrabajo;
+	int index;
+
+	//BUSCO ESPACIO EN ARRAY
+	index = eTrabajo_ObtenerIndexLibre(array, TAM);
+
+	//SI INDEX == -1 ARRAY LLENO
+	//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
+	if (index != -1)
+	{
+		//PIDO DATOS - CARGO Producto AUXILIAR
+		auxiliarTrabajo = eTrabajo_CargarDatos(array,TAM);
+		//SETEO ID UNICO - VARIABLE ESTATICA AUTOINCREMENTAL
+		auxiliarTrabajo.idProducto = eTrabajo_ObtenerID();
+		//CAMBIO SU ESTADO A "OCUPADO"
+		auxiliarTrabajo.isEmpty = OCUPADO;
+		//SETEO EL ARRAY CON AUXILIAR EN INDEX LIBRE OBTENIDO PREVIAMENTE
+		array[index] = auxiliarTrabajo;
+
+		//RETORNO 1 PARA SABER QUE FUE DADO DE ALTA SATISFACTORIAMENTE
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int eTrabajo_ObtenerID(int* servicios_idIncremental)
+{
+	return servicios_idIncremental = servicios_idIncremental+1;
+}
+
+eTrabajo eTrabajo_CargarDatos(eTrabajo array[], int TAM)
+{
+	char marcaBicicleta[25];
+	int rodadoBicicleta;
+	eTrabajo auxiliar;
+	int dia;
+	int mes;
+	int anio;
+
+	/** PEDIR DATOS BICICLETA*/
+	printf("\ningrese marca de la bicicleta");
+	scanf("%s", &marcaBicicleta);
+	auxiliar.marcaBicicleta = marcaBicicleta;
+
+	/** PEDIR DATOS DEL RODADO*/
+	printf("\ningrese rodado de la bicicleta");
+	scanf("%s", &rodadoBicicleta);
+	auxiliar.rodadoBicicleta = rodadoBicicleta;
+
+	/** PEDIR DATOS DE FECHA*/
+
+	fechaValidada(auxiliar, TAM, &dia, &mes, &anio);
+
+	auxiliar.fecha{dia,mes,anio}
+	/** IMPORTANTE - NO CARGAR ID NI ESTADO - SE HACE EN EL ALTA */
+	return auxiliar;
+}
+
+int eTrabajo_Modificacion(eTrabajo array[], int TAM)
+{
+	int retorno = 0;
+	int idservicios;
+	int index;
+	int bandera = 0;
+	int resultado;
+	eTrabajo auxiliar;
+
+	//LISTO TODOS LOS servicios
+	if (eTrabajo_MostrarTodos(array, TAM))
+	{
+		//BANDERA EN 1 SI HAY servicios DADOS DE ALTA PARA LISTAR
+		bandera = 1;
+	}
+
+	//SI HAY servicios PARA MODIFICAR
+	if (bandera)
+	{
+		//PIDO ID A MODIFICAR
+		idservicios = 1; /**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
+		getInt(&resultado,"ingrese id producto", "ERROR, id del producto no valida, intente nuevamente",0,TAM,5);
+
+		//BUSCO INDEX POR ID EN ARRAY
+		while (eTrabajo_BuscarPorID(array, TAM, idservicios) == -1)
+		{
+			puts("NO EXISTE ID.");
+			idservicios = 1; /**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
+		}
+
+		//OBTENGO INDEX DEL ARRAY DE servicios A MODIFICAR
+		index = eTrabajo_BuscarPorID(array, TAM, idservicios);
+
+		//LLAMO A FUNCION QUE MODIFICA servicios
+		auxiliar = eTrabajo_ModificarUno(array[index]);
+
+		/**PREGUNTAR SI DESEA CONTINUAR*/
+		//MODIFICACION ACEPTADA
+		array[index] = auxiliar;
+
+		//RETORNO 1 SI SE MODIFICO CORRECTAMENTE
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int eTrabajo_MostrarTodos(eTrabajo array[], int TAM)
+{
+	int i;
+	int retorno = 0;
+	int cantidad = 0;
+
+	//CABECERA
+	puts("\n\t> LISTADO de Trabajos");
+	printf("%5s\n\n", "ID"); //AGREGAR TITULOS DE COLUMNA (QUITAR DE VER QUE NO ES NECESARIO)
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//PREGUNTO POR SU ESTADO "OCUPADO"
+			if (array[i].isEmpty == OCUPADO)
+			{
+				//MUESTRO UN SOLO Producto
+				eTrabajo_MostrarUno(array[i]);
+				//CONTADOR DE Producto
+				cantidad++;
+			}
+		}
+	}
+
+	//SI CANTIDAD == 0 - NO HUBO Producto PARA MOSTRAR (ARRAY SIN ALTAS)
+	if (cantidad > 0)
+	{
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+
+int eTrabajo_BuscarPorID(eTrabajo array[], int TAM, int ID)
+{
+	int retorno = -1;
+	int i;
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//BUSCO QUE ESTE "OCUPADO" Y QUE CONCIDA EL ID QUE ESTOY BUSCANDO
+			if (array[i].idTrabajo == ID && array[i].isEmpty == OCUPADO)
+			{
+				//SI ENCONTRE EL ID
+				//DEVUELVO EL INDEX DE DONDE ESTA EL ID BUSCADO Y SALGO
+				retorno = i;
+				break;
+			}
+		}
+	}
+
+	return retorno;
+}
+
+eTrabajo eTrabajo_ModificarUno(eTrabajo servicios)
+{
+	eTrabajo auxiliar;
+	eTrabajo trabajo;
+	int input;
+	int validacion;
+
+	/** MODIFICAR DATOS NECESARIOS PARA EL "MODIFICAR" */
+	printf("que desea mofificar:\n"
+			"1) Marca de la bicicleta\n"
+			"2) El servicio\n");
+	scanf("%d", &input);
+	switch(input)
+	{
+	case 1:
+		do{
+			printf("\ningrese marca de la bicicleta");
+			scanf("%c", &auxiliar.marcaBicicleta);
+			printf("esta seguro que desea cambiar la marca de la bicicleta a: %c\n"
+					"'0' si esta de acuerdo, '1' para descartar la modificacion", auxiliar.marcaBicicleta);
+			scanf("%d", &validacion);
+			if(validacion==0)
+			{
+				printf("la marca se modifico con exito");
+			}else{
+				if(validacion==1)
+				{
+					printf("se anulo la modificacion");
+					break;
+				}else{
+					printf("ERROR, vuelva a intentarlo");
+				}
+			}
+		}while(validacion==0);
+		break;
+	case 2:
+		do{
+			printf("\ningrese marca de la bicicleta");
+			scanf("%c", &auxiliar.marcaBicicleta);
+			printf("esta seguro que desea cambiar la marca de la bicicleta a: %c\n"
+					"'0' si esta de acuerdo, '1' para descartar la modificacion", auxiliar.marcaBicicleta);
+			scanf("%d", &validacion);
+			if(validacion==0)
+			{
+				printf("la marca se modifico con exito");
+			}else{
+				if(validacion==1)
+				{
+					printf("se anulo la modificacion");
+					break;
+				}else{
+					printf("ERROR, vuelva a intentarlo");
+				}
+			}
+		}while(validacion==0);
+		break;
+	}
+	/** IMPORTANTE - MODIFICAR EL AUXILIAR QUE ES LA COPIA DEL ORIGINAL */
+	return auxiliar;
+}
+
+/*
+ * eTrabajos.h
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef ETRABAJOS_H_
+#define ETRABAJOS_H_
+
+
+
+#endif /* ETRABAJOS_H_ */
+
+/*
+ * UTN.c
+ *
+ *  Created on: 12 may. 2021
+ *      Author: Ususario
+ */
+
+/**
+ * \brief Solicita un n�mero al usuario y devuelve el resultado
+ * \param mensaje Es el mensaje a ser mostrado
+ * \return El n�mero ingresado por el usuario
+ *
+ */
+                              //VALIDACIONES NUMEROS//
+int getFloat(char* resultado, char *mensaje, char* mensajeError, int minimo, int maximo,int reintentos)
+{
+	int retorno;
+	float auxiliarFloat;
+	int i;
+
+	retorno =-1;
+
+	if(resultado!=NULL && mensaje!=NULL && mensajeError!=NULL && minimo<=maximo && reintentos>=0)
+	{
+		for(reintentos=i;i<=0;i--)
+		{
+			printf("%s",mensaje);
+			fflush("stdin");
+			scanf("%f",&resultado);
+			if(resultado>minimo && resultado<maximo)
+			{
+				auxiliarFloat=*resultado;
+				retorno = 0;
+				break;
+			}else{
+				printf("\nEl numero ingresado no esta dentro del limite(%d-%d), intente nuevamente\n",minimo,maximo);
+			}
+		}
+	}
+    return retorno;
+}
+
+/**
+ * \brief Solicita un n�mero al usuario y devuelve el resultado
+ * \param mensaje Es el mensaje a ser mostrado
+ * \return El n�mero ingresado por el usuario
+ *
+ */
+int getInt(char* resultado, char *mensaje, char* mensajeError, int minimo, int maximo,int reintentos)
+{
+	int retorno;
+	int auxiliarInt;
+
+	retorno =-1;
+
+	if(resultado!=NULL && mensaje!=NULL && mensajeError!=NULL && minimo>=maximo && reintentos>=0)
+	{
+		for(reintentos;reintentos<=0;reintentos--)
+		{
+			printf("%s",mensaje);
+			fflush("stdin");
+			scanf("%d",&resultado);
+			if(resultado>minimo && resultado<maximo)
+			{
+				auxiliarInt=*resultado;
+				retorno = 0;
+				break;
+			}else{
+				printf("\nEl numero ingresado no esta dentro del limite(%d-%d), intente nuevamente\n",minimo, maximo);
+			}
+		}
+	}
+    return retorno;
+}
+
+
+/**
+ * \brief Solicita un caracter al usuario y devuelve el resultado
+ * \param mensaje Es el mensaje a ser mostrado
+ * \return El caracter ingresado por el usuario
+ *
+ */
+
+int getChar(char* resultado, char *mensaje, char* mensajeError, int minimo,int maximo,int reintentos)
+{
+	int retorno;
+	int auxiliarChar;
+
+	retorno =-1;
+
+	if(resultado!=NULL && mensaje!=NULL && mensajeError!=NULL && minimo>=maximo && reintentos>=0)
+	{
+		for(reintentos;reintentos<=0;reintentos--)
+		{
+			printf("%s",mensaje);
+			fflush("stdin");
+			scanf("%c",&resultado);
+			if(resultado>minimo && resultado<maximo)
+			{
+				auxiliarChar=*resultado;
+				retorno = 0;
+				break;
+			}else{
+				printf("\nLa palabra ingresada no esta dentro del limite(%d-%d), intente nuevamente\n",minimo ,maximo);
+			}
+		}
+	}
+    return retorno;
+}
+
+
+/**
+ * \brief Genera un n�mero aleatorio
+ * \param desde N�mero aleatorio m�nimo
+ * \param hasta N�mero aleatorio m�ximo
+ * \param iniciar Indica si se trata del primer n�mero solicitado 1 indica que si
+ * \return retorna el n�mero aleatorio generado
+ *
+ */
+char getNumeroAleatorio(int desde , int hasta, int iniciar)
+{
+    if(iniciar)
+        srand (time(NULL));
+    return desde + (rand() % (hasta + 1 - desde)) ;
+}
+
+/**
+ * \brief Solicita un texto al usuario y lo devuelve
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return void
+ */
+
+void getString(char mensaje[],char input[])
+{
+    printf("%s",mensaje);
+    scanf ("%s", input);
+}
+
+/**
+ * \brief Solicita un texto al usuario y lo devuelve
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return 1 si el texto contiene solo letras
+ */
+int getStringLetras(char mensaje[],char input[])
+{
+    char aux[256];
+    getString(mensaje,aux);
+    if(soloLetras(aux))
+    {
+        strcpy(input,aux);
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * \brief Verifica si el valor recibido contiene solo letras
+ * \param str Array con la cadena a ser analizada
+ * \return 1 si contiene solo ' ' y letras y 0 si no lo es
+ *
+ */
+int soloLetras(char str[])
+{
+   int i=0;
+   while(str[i] != '\0')
+   {
+       if((str[i] != ' ') && (str[i] < 'a' || str[i] > 'z') && (str[i] < 'A' || str[i] > 'Z'))
+           return 0;
+       i++;
+   }
+   return 1;
+}
+
+/**
+ * \brief Solicita un texto num�rico al usuario y lo devuelve
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return 1 si el texto contiene solo n�meros
+ */
+int getStringNumeros(char mensaje[],char input[])
+{
+    char aux[256];
+    getString(mensaje,aux);
+    if(esNumerico(aux))
+    {
+        strcpy(input,aux);
+        return 1;
+    }
+    return 0;
+}
+
+
+/**
+ * \brief Solicita un texto num�rico al usuario y lo devuelve (acepta flotantes)
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return 1 si el texto contiene solo n�meros
+ */
+//int getStringNumerosFlotantes(char mensaje[],char input[])
+//{
+//    char aux[256];
+//    getString(mensaje,aux);
+//    if(esNumericoFlotante(aux))
+//    {
+//        strcpy(input,aux);
+//        return 1;
+//    }
+//    return 0;
+//}
+
+int esFecha(int fecha[])//el primero entre 1 y 31 ,segundo 1 y 12
+{
+
+}
+
+int pedirNombre()//pedir char[] ^\n
+{
+	yu
+}
+
+void pausaConsola(void)
+{
+	system("pause");
+}
+
+void limpiarConsola(void)
+{
+	system("CLS");
+}
+
+/*
+ * UTN.h
+ *
+ *  Created on: 12 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef UTN_H_
+#define UTN_H_
+
+
+
+#endif /* UTN_H_ */
+
+/*
+ ============================================================================
+ Name        : 1erParcialProgramacion.c
+ Author      : Monsalbo Lucio
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ TIDADES:
+	Servicio:
+		 id (comienza en 20000, autoincremental)
+		 descripci�n (m�ximo 25 caracteres)
+		 precio
+	Trabajo:
+		 id (autoincremental)
+		 marcaBicicleta (Cadena) Validar
+		 rodadoBicicleta
+		 idServicio (debe existir) Validar
+		 fecha (Validar d�a, mes y a�o)
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "eServicios.h"
+#define TAM_ESTRUCTURA 5
+
+int main(void)
+{
+	setbuf(stdout, NULL);
+
+	int idAutoincrementalServicios;
+	int idAutoincrementaltrabajos;
+
+	idAutoincrementalServicios = 20000;
+
+	eServicios servicios[TAM_ESTRUCTURA];
+
+	eServicios_Inicializar(servicios, TAM_ESTRUCTURA);
+
+
+	return EXIT_SUCCESS;
+}
+
+/*
+ * eServicio.c
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ */
+
+#define  LIBRE  0
+#define OCUPADO 1
+
+
+#include "eServicios.h"
+
+
+int eServicios_Inicializar(eServicios array[], int TAM)
+{
+	int i;
+	int retorno;
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//SET ESTADO DE "LIBRE"
+			array[i].isEmpty = LIBRE;
+		}
+	}
+	return retorno;
+}
+
+
+                        //poner esa variable en el main y pasarla por puntero//
+
+
+int eServicios_ObtenerIndexLibre(eServicios array[], int TAM)
+{
+	int retorno = -1;
+	int i;
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//PREGUNTO POR EL ESTADO "LIBRE"
+			if (array[i].isEmpty == LIBRE)
+			{
+				//OBTENGO EL PRIMER INDEX DEL VECTOR "LIBRE" Y SALGO
+				retorno = i;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+int eServicios_BuscarPorID(eServicios array[], int TAM, int ID)
+{
+	int retorno = -1;
+	int i;
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//BUSCO QUE ESTE "OCUPADO" Y QUE CONCIDA EL ID QUE ESTOY BUSCANDO
+			if (array[i].idservicios == ID && array[i].isEmpty == OCUPADO)
+			{
+				//SI ENCONTRE EL ID
+				//DEVUELVO EL INDEX DE DONDE ESTA EL ID BUSCADO Y SALGO
+				retorno = i;
+				break;
+			}
+		}
+	}
+
+	return retorno;
+}
+
+void eServicios_MostrarUno(eServicios servicios)
+{
+	//PRINTF DE UN SOLO servicios
+	printf("%5d\n", servicios.idservicios);
+}
+
+int eServicios_MostrarTodos(eServicios array[], int TAM)
+{
+	int i;
+	int retorno = 0;
+	int cantidad = 0;
+
+	//CABECERA
+	puts("\n\t> LISTADO servicios");
+	printf("%5s\n\n", "ID"); //AGREGAR TITULOS DE COLUMNA (QUITAR DE VER QUE NO ES NECESARIO)
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//PREGUNTO POR SU ESTADO "OCUPADO"
+			if (array[i].isEmpty == OCUPADO)
+			{
+				//MUESTRO UN SOLO servicios
+				eServicios_MostrarUno(array[i]);
+				//CONTADOR DE servicios
+				cantidad++;
+			}
+		}
+	}
+
+	//SI CANTIDAD == 0 - NO HUBO servicios PARA MOSTRAR (ARRAY SIN ALTAS)
+	if (cantidad > 0)
+	{
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int eServicios_MostrarDadosDeBaja(eServicios array[], int TAM)
+{
+	int i;
+	int retorno = 0;
+	int cantidad = 0;
+
+	//CABECERA
+	puts("\t> servicios\n");
+	printf("%5s\n\n", "ID"); //AGREGAR TITULOS DE COLUMNA (QUITAR DE VER QUE NO ES NECESARIO)
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//PREGUNTO POR SU ESTADO "BAJA"
+			if (array[i].isEmpty == BAJA)
+			{
+				//MUESTRO UN SOLO servicios
+				eServicios_MostrarUno(array[i]);
+				//CONTADOR DE servicios
+				cantidad++;
+			}
+		}
+	}
+
+	//SI CANTIDAD == 0 - NO HUBO servicios PARA MOSTRAR (ARRAY SIN BAJAS)
+	if (cantidad > 0)
+	{
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+eServicios eServicios_CargarDatos(void)
+{
+	eServicios auxiliar;
+	/** CARGAR DATOS NECESARIOS PARA EL ALTA*/
+	/** IMPORTANTE - NO CARGAR ID NI ESTADO - SE HACE EN EL ALTA */
+	return auxiliar;
+}
+
+eServicios eServicios_ModificarUno(eServicios servicios)
+{
+	eServicios auxiliar = servicios;
+	/** MODIFICAR DATOS NECESARIOS PARA EL "MODIFICAR" */
+	/** IMPORTANTE - MODIFICAR EL AUXILIAR QUE ES LA COPIA DEL ORIGINAL */
+	return auxiliar;
+}
+
+int eServicios_Alta(eServicios array[], int TAM)
+{
+	int retorno = 0;
+	eServicios auxservicios;
+
+	//BUSCO ESPACIO EN ARRAY
+	int index = eServicios_ObtenerIndexLibre(array, TAM);
+
+	//SI INDEX == -1 ARRAY LLENO
+	//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
+	if (index != -1) {
+		//PIDO DATOS - CARGO servicios AUXILIAR
+		auxservicios = eServicios_CargarDatos();
+		//SETEO ID UNICO - VARIABLE ESTATICA AUTOINCREMENTAL
+		auxservicios.idservicios = eServicios_ObtenerID();
+		//CAMBIO SU ESTADO A "OCUPADO"
+		auxservicios.isEmpty = OCUPADO;
+		//SETEO EL ARRAY CON AUXILIAR EN INDEX LIBRE OBTENIDO PREVIAMENTE
+		array[index] = auxservicios;
+
+		//RETORNO 1 PARA SABER QUE FUE DADO DE ALTA SATISFACTORIAMENTE
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int eServicios_Baja(eServicios array[], int TAM)
+{
+	int retorno = 0;
+	int idservicios;
+	int index;
+	int flag = 0;
+
+	//LISTO TODOS LOS servicios
+	if (eServicios_MostrarTodos(array, TAM))
+	{
+		//BANDERA EN 1 SI HAY servicios DADOS DE ALTA PARA LISTAR
+		flag = 1;
+	}
+
+	//SI HAY servicios PARA DAR DE BAJA
+	if (flag)
+	{
+		//PIDO ID A DAR DE BAJA
+		idservicios = 1; /**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
+
+		//BUSCO INDEX POR ID EN ARRAY
+		while (eServicios_BuscarPorID(array, TAM, idservicios) == -1)
+		{
+			puts("NO EXISTE ID.");
+			idservicios = 1; /**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
+		}
+
+		//OBTENGO INDEX DEL ARRAY DE servicios A DAR DE BAJA
+		index = eServicios_BuscarPorID(array, TAM, idservicios);
+
+		/**PREGUNTAR SI DESEA CONTINUAR*/
+		//BAJA ACEPTADA - CAMBIO ESTADO A "BAJA"
+		array[index].isEmpty = BAJA;
+
+		//RETORNO 1 SI SE DIO DE BAJA CORRECTAMENTE
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int eServicios_Modificacion(eServicios array[], int TAM)
+{
+	int retorno = 0;
+	int idservicios;
+	int index;
+	int flag = 0;
+	eServicios auxiliar;
+
+	//LISTO TODOS LOS servicios
+	if (eServicios_MostrarTodos(array, TAM))
+	{
+		//BANDERA EN 1 SI HAY servicios DADOS DE ALTA PARA LISTAR
+		flag = 1;
+	}
+
+	//SI HAY servicios PARA MODIFICAR
+	if (flag)
+	{
+		//PIDO ID A MODIFICAR
+		idservicios = 1; /**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
+
+		//BUSCO INDEX POR ID EN ARRAY
+		while (eServicios_BuscarPorID(array, TAM, idservicios) == -1)
+		{
+			puts("NO EXISTE ID.");
+			idservicios = 1; /**USAR FUNCION GET_INT DE LIBRERIA DE INPUTS*/
+		}
+
+		//OBTENGO INDEX DEL ARRAY DE servicios A MODIFICAR
+		index = eServicios_BuscarPorID(array, TAM, idservicios);
+
+		//LLAMO A FUNCION QUE MODIFICA servicios
+		auxiliar = eServicios_ModificarUno(array[index]);
+
+		/**PREGUNTAR SI DESEA CONTINUAR*/
+		//MODIFICACION ACEPTADA
+		array[index] = auxiliar;
+
+		//RETORNO 1 SI SE MODIFICO CORRECTAMENTE
+		retorno = 1;
+	}
+
+	return retorno;
+}
+
+int eServicios_Sort(eServicios array[], int TAM, int criterio)
+{
+	int retorno = 0;
+	int i;
+	int j;
+	eServicios aux;
+
+	/** EJEMPLO DE SORT CON ID DE servicios */
+	/** MODIFICAR "CRITERIO DE ORDENAMIENTO" PARA OTROS CASOS DE ORDENAMIENTO */
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (array != NULL && TAM > 0)
+	{
+		switch (criterio)
+		{
+		case -1:
+			for (i = 0; i < TAM - 1; i++)
+			{
+				for (j = i + 1; j < TAM; j++)
+				{
+					//PREGUNTO POR ESTADO "OCUPADO" DE AMBOS
+					if (array[i].isEmpty == OCUPADO
+							&& array[j].isEmpty == OCUPADO)
+					{
+						//CRITERIO DE ORDENAMIENTO
+						if (array[i].idservicios > array[j].idservicios)
+						{
+							//INTERCAMBIO POSICIONES EN ARRAY
+							aux = array[i];
+							array[i] = array[j];
+							array[j] = aux;
+						}
+					}
+				}
+			}
+			retorno = 1;
+			break;
+		case 1:
+			for (i = 0; i < TAM - 1; i++)
+			{
+				for (j = i + 1; j < TAM; j++)
+				{
+					//PREGUNTO POR ESTADO "OCUPADO" DE AMBOS
+					if (array[i].isEmpty == OCUPADO
+							&& array[j].isEmpty == OCUPADO)
+					{
+						//CRITERIO DE ORDENAMIENTO
+						if (array[i].idservicios < array[j].idservicios)
+						{
+							//INTERCAMBIO POSICIONES EN ARRAY
+							aux = array[i];
+							array[i] = array[j];
+							array[j] = aux;
+						}
+					}
+				}
+			}
+			retorno = 1;
+			break;
+		default:
+			//CRITERIO DE ORDENAMIENTO MAL INGRESADO
+			retorno = 0;
+			break;
+		}
+	}
+	return retorno;
+}
+
+
+/*
+ * eServicio.h
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef ESERVICIO_H_
+#define ESERVICIO_H_
+
+typedef struct
+{
+	int idServicios;
+	char descripci�n[];
+	float precio;
+}eServicios;
+
+typedef struct
+{
+	int idTrabajo;
+	char marcaBicicleta;
+	int rodadoBicicleta;
+	eServicios idServicio;
+	int fecha;
+	int isEmpty;
+}eTrabajo;
+
+int eServicios_Inicializar(eServicios array[], int TAM);
+
+int eServicios_ObtenerID(int* servicios_idIncremental);
+
+
+#endif /* ESERVICIO_H_ */
