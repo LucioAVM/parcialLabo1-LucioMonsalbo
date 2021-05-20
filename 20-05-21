@@ -1,0 +1,910 @@
+/*
+ * nexo.c
+ *
+ *  Created on: 19 may. 2021
+ *      Author: Ususario
+ */
+
+#include "Nexo.h"
+
+
+int mostrarMenu(void)
+{
+	int retorno;
+	int bandera; // la primera ves que pasa no muestra error si se repite muestra error
+
+	bandera = 0;
+
+	retorno = -1;
+
+	do
+	{
+		if(bandera == "1")
+		{
+			printf("Error, intente nuevamente\n\n");
+		}
+
+		printf("1) Dar de alta trabajador\n"
+				"2) Modificar Trabajador\n"
+				"3) Dar de baja trabajador\n"
+				"4) Listar trabajos(por a�o y marca en caso de igualdad)\n"
+				"5) Lista de servicios\n"
+				"6) Precio total de servicios prestados\n"
+				"7) Finalizar programa\n");
+		scanf("%d", retorno);
+
+		bandera = 1;
+
+	}while(retorno != "-1" && retorno>0 && retorno<8);
+
+	return retorno;
+}
+
+int altaTrabajo(eTrabajos array[], int TAM,int *idIncremental)
+{
+	eTrabajos auxTrabajos;
+	int index;
+	int validacionUsuario;
+
+	auxTrabajos =  eTrabajos_Alta( array, TAM, &idIncremental, &index);
+
+	printf("esta seguro que quiere dar da alta el usuario ingresado?\n"
+			"1) SI\n"
+			"2) NO\n");
+	scanf("%d", validacionUsuario);
+	while(validacionUsuario!=1 && validacionUsuario!=2)
+	{
+		printf("ERROR, Ingrese una de las opciones\n"
+				"esta seguro que quiere dar da alta el usuario ingresado?\n"
+				"1) SI\n"
+				"2) NO\n");
+		scanf("%d", validacionUsuario);
+	}
+
+	if(validacionUsuario==1)
+	{
+		auxTrabajos.isEmpty = OCUPADO;//CAMBIO SU ESTADO A "OCUPADO"
+
+		array[index] = auxTrabajos;//SETEO EL ARRAY CON AUXILIAR EN INDEX LIBRE OBTENIDO PREVIAMENTE
+	}else{
+		printf("se ha cancelado el alta con exito");
+	}
+}
+
+
+void modificar(eTrabajos trabajos)
+{
+	 eTrabajos_ModificarUno(trabajos);
+}
+
+int mostrarServicios(eTrabajos trabajos, eServicios servicios, int TAM)
+{
+	int retorno;
+	int i;
+	int validacion;
+
+	for(i=0;i<TAM;i++)
+	{
+		if(trabajos[i].isEmpty != OCUPADO)
+		{
+			validacion = listaDeServicios( servicios, TAM);
+		}
+	}
+
+	return retorno;
+}
+
+int mostrarTrabajos(eTrabajos lista, int TAM);
+{
+	int validacion;
+
+	validacion = listaTrabajos( lista, TAM);
+
+	if(validacion==0)
+	{
+		printf("empleado %d: %d %s %s %f %d \n", i ,
+						list[i].id,
+						list[i].nombre,
+						list[i].apellido,
+						list[i].salario,
+						list[i].sector);
+	}
+}
+
+
+
+int MostrarTotal(eTrabajos trabajos, eServicios servicios, int TAM)
+{
+	int i;
+	int acumuladorServicios;
+	int retorno;
+
+	for(i=0;i<TAM;i++)
+	{
+		if(trabajos[i].isEmpty != LIBRE)
+		{
+			acumuladorServicios = acumuladorServicios + servicios[i].idServicios;
+		}
+	}
+	printf("el importe total es de &d", acumuladorServicios);
+	return retorno;
+}
+
+/*
+ * Nexo.h
+ *
+ *  Created on: 19 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef NEXO_H_
+#define NEXO_H_
+#include "eServicio.h"
+#include "eTrabajos.h"
+#include <strings.h>
+#include "UTN.h"
+#define LIBRE 0
+#define OCUPADO 1
+
+typedef struct
+{
+	int idServicios;
+	char descripci�n[25];
+	float precio;
+}eServicios;
+
+typedef struct
+{
+	int idTrabajo;
+	char marcaBicicleta;
+	int rodadoBicicleta;
+	eServicios idServicio;
+	int fecha[];
+	int isEmpty;
+}eTrabajos;
+
+
+//************************MENU**************************//
+int mostrarMenu(void);                                  //HECHA
+//************************TOTAL*************************//
+int MostrarTotal(eTrabajos trabajos, eServicios servicios, int TAM); //HECHO
+//*********************VALIDACIONES*********************//
+//---------------------ALTA-----------------------------//
+                                                        ///hacer
+//---------------------BAJA-----------------------------//
+                                                        ///hacer
+//-----------------MODIFICACION-------------------------//
+                                                        ///hacer
+int mostrarTrabajos(eTrabajos lista, int TAM);
+#endif /* NEXO_H_ */
+
+/*
+ * UTN.c
+ *
+ *  Created on: 12 may. 2021
+ *      Author: Ususario
+ */
+
+/**
+ * \brief Solicita un n�mero al usuario y devuelve el resultado
+ * \param mensaje Es el mensaje a ser mostrado
+ * \return El n�mero ingresado por el usuario
+ *
+ */
+                              //VALIDACIONES NUMEROS//
+int getFloat(char* resultado, char *mensaje, char* mensajeError, int minimo, int maximo,int reintentos)
+{
+	int retorno;
+	float auxiliarFloat;
+	int i;
+
+	retorno =-1;
+
+	if(resultado!=NULL && mensaje!=NULL && mensajeError!=NULL && minimo<=maximo && reintentos>=0)
+	{
+		for(reintentos=i;i<=0;i--)
+		{
+			printf("%s",mensaje);
+			fflush("stdin");
+			scanf("%f",&resultado);
+			if(resultado>minimo && resultado<maximo)
+			{
+				auxiliarFloat=*resultado;
+				retorno = 0;
+				break;
+			}else{
+				printf("\nEl numero ingresado no esta dentro del limite(%d-%d), intente nuevamente\n",minimo,maximo);
+			}
+		}
+	}
+    return retorno;
+}
+
+/**
+ * \brief Solicita un n�mero al usuario y devuelve el resultado
+ * \param mensaje Es el mensaje a ser mostrado
+ * \return El n�mero ingresado por el usuario
+ *
+ */
+int getInt(char* resultado, char *mensaje, char* mensajeError, int minimo, int maximo,int reintentos)
+{
+	int retorno;
+	int auxiliarInt;
+
+	retorno =-1;
+
+	if(resultado!=NULL && mensaje!=NULL && mensajeError!=NULL && minimo>=maximo && reintentos>=0)
+	{
+		for(reintentos;reintentos<=0;reintentos--)
+		{
+			printf("%s",mensaje);
+			fflush("stdin");
+			scanf("%d",&resultado);
+			if(resultado>minimo && resultado<maximo)
+			{
+				auxiliarInt=*resultado;
+				retorno = 0;
+				break;
+			}else{
+				printf("\nEl numero ingresado no esta dentro del limite(%d-%d), intente nuevamente\n",minimo, maximo);
+			}
+		}
+	}
+    return retorno;
+}
+
+
+/**
+ * \brief Solicita un caracter al usuario y devuelve el resultado
+ * \param mensaje Es el mensaje a ser mostrado
+ * \return El caracter ingresado por el usuario
+ *
+ */
+
+int getChar(char* resultado, char *mensaje, char* mensajeError, int minimo,int maximo,int reintentos)
+{
+	int retorno;
+	int auxiliarChar;
+
+	retorno =-1;
+
+	if(resultado!=NULL && mensaje!=NULL && mensajeError!=NULL && minimo>=maximo && reintentos>=0)
+	{
+		for(reintentos;reintentos<=0;reintentos--)
+		{
+			printf("%s",mensaje);
+			fflush("stdin");
+			scanf("%c",&resultado);
+			if(resultado>minimo && resultado<maximo)
+			{
+				auxiliarChar=*resultado;
+				retorno = 0;
+				break;
+			}else{
+				printf("\nLa palabra ingresada no esta dentro del limite(%d-%d), intente nuevamente\n",minimo ,maximo);
+			}
+		}
+	}
+    return retorno;
+}
+
+
+/**
+ * \brief Genera un n�mero aleatorio
+ * \param desde N�mero aleatorio m�nimo
+ * \param hasta N�mero aleatorio m�ximo
+ * \param iniciar Indica si se trata del primer n�mero solicitado 1 indica que si
+ * \return retorna el n�mero aleatorio generado
+ *
+ */
+char getNumeroAleatorio(int desde , int hasta, int iniciar)
+{
+    if(iniciar)
+        srand (time(NULL));
+    return desde + (rand() % (hasta + 1 - desde)) ;
+}
+
+/**
+ * \brief Solicita un texto al usuario y lo devuelve
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return void
+ */
+
+void getString(char mensaje[],char input[])
+{
+    printf("%s",mensaje);
+    scanf ("%s", input);
+}
+
+/**
+ * \brief Solicita un texto al usuario y lo devuelve
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return 1 si el texto contiene solo letras
+ */
+int getStringLetras(char mensaje[],char input[])
+{
+    char aux[256];
+    getString(mensaje,aux);
+    if(soloLetras(aux))
+    {
+        strcpy(input,aux);
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * \brief Verifica si el valor recibido contiene solo letras
+ * \param str Array con la cadena a ser analizada
+ * \return 1 si contiene solo ' ' y letras y 0 si no lo es
+ *
+ */
+int soloLetras(char str[])
+{
+   int i=0;
+   while(str[i] != '\0')
+   {
+       if((str[i] != ' ') && (str[i] < 'a' || str[i] > 'z') && (str[i] < 'A' || str[i] > 'Z'))
+           return 0;
+       i++;
+   }
+   return 1;
+}
+
+/**
+ * \brief Solicita un texto num�rico al usuario y lo devuelve
+ * \param mensaje Es el mensaje a ser mostrado
+ * \param input Array donde se cargar� el texto ingresado
+ * \return 1 si el texto contiene solo n�meros
+ */
+int getStringNumeros(char mensaje[],char input[])
+{
+    char aux[256];
+    getString(mensaje,aux);
+    if(esNumerico(aux))
+    {
+        strcpy(input,aux);
+        return 1;
+    }
+    return 0;
+}
+
+/*
+ * UTN.h
+ *
+ *  Created on: 12 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef UTN_H_
+#define UTN_H_
+
+
+
+#endif /* UTN_H_ */
+
+/*
+ ============================================================================
+ Name        : 1erParcialProgramacion.c
+ Author      : Monsalbo Lucio
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ TIDADES:
+	Servicio:
+		 id (comienza en 20000, autoincremental)
+		 descripci�n (m�ximo 25 caracteres)
+		 precio
+	Trabajo:
+		 id (autoincremental)
+		 marcaBicicleta (Cadena) Validar
+		 rodadoBicicleta
+		 idServicio (debe existir) Validar
+		 fecha (Validar d�a, mes y a�o)
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "Nexo.h"
+#define TAM_ESTRUCTURA 5
+
+int main(void)
+{
+	setbuf(stdout, NULL);
+
+	//**************************VARIABLES****************************//
+	int menu;
+	int idAutoincrementalServicios;
+	int idAutoincrementaltrabajos;
+	int validacion;
+
+
+	//************************INICIALIZACION*************************//
+	idAutoincrementalServicios = 20000;
+
+	eTrabajos trabajos[TAM_ESTRUCTURA];
+	eServicios servicios[TAM_ESTRUCTURA];
+
+	servicios = eServicios_HardcodearDatos();
+
+	eTrabajos_Inicializar(trabajos, TAM_ESTRUCTURA);
+
+
+	//*********************BUCLE CON ESQUELETO***********************//
+	do
+	{
+		//--------------------MUESTRA MENU-----------------------//
+		menu = mostrarMenu();
+
+		switch(menu)
+		{
+		case 1:
+			validacion = altaTrabajo(trabajos, TAM, &idAutoincrementaltrabajos);
+			break;
+
+		case 2:
+
+			break;
+
+		case 3:
+
+			break;
+
+		case 4:
+
+			break;
+
+		case 5:
+
+			break;
+
+		case 6:
+			validar = MostrarTotal( trabajos, servicios, TAM_ESTRUCTURA);
+			break;
+
+	}while(menu == "7");
+
+
+
+
+	return EXIT_SUCCESS;
+}
+
+/*
+ * eServicio.c
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ */
+
+#define  LIBRE  0
+#define OCUPADO 1
+
+
+#include "eServicio.h"
+
+
+eServicios eServicios_HardcodearDatos(void)
+{
+	eServicios auxiliar;
+	int i;
+	int idAutoinclemental;
+
+	idAutoinclemental = 20000;
+
+	//Limpieza: $250, Parche: $300, Centrado: $400, Cadena: $350
+	for (i = 0; i < 5; i++)
+	{
+		switch(i)
+		{
+		case 1:
+			auxiliar[i].idServicios = obtenerID(idAutoinclemental);
+			auxiliar[i].descripci�n = "Limpieza";
+			auxiliar[i].precio = "250";
+			break;
+		case 2:
+			auxiliar[i].descripci�n = "Parche";
+			auxiliar[i].precio = "300";
+			break;
+		case 3:
+			auxiliar[i].descripci�n = "Centrado";
+			auxiliar[i].precio = "400";
+			break;
+		case 4:
+			auxiliar[i].descripci�n = "Cadena";
+			auxiliar[i].precio = "350";
+			break;
+		}
+	}
+	return auxiliar;
+}
+
+int obtenerID(int* servicios_idIncremental)
+{
+	return servicios_idIncremental = servicios_idIncremental+1;
+}
+
+int listaDeServicios(eServicios servicios, int TAM)
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+
+	for(i=0;i<TAM;i++)
+	{
+		printf(" id: %d \n descripcion: %s\n precio: %f\n\n", servicios[i].idServicios, servicios[i].descripcion, servicios[i].precio);
+		if(i==TAM)
+		{
+			retorno = 0;
+		}
+	}
+	//FALTA FILTRAR POR EL CAMPO ISEMPTY
+	return retorno;
+}
+
+/*
+ * eServicio.h
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef ESERVICIO_H_
+#define ESERVICIO_H_
+#include "Nexo.h"
+
+
+//************************ALTA SERVICIOS*********************************//
+int altaServicio();
+//************************MODIFICACION SERVICIOS*************************//
+int modificacionServicio();
+//************************BAJA SERVICIOS*********************************//
+int bajaServicio();
+//************************LISTA SERVICIOS********************************//
+int listaDeServicios(eServicios servicios, int TAM);
+
+
+
+//int eServicios_Inicializar(eServicios array[], int TAM);
+//int eServicios_ObtenerIndexLibre(eServicios array[], int TAM);
+//int eServicios_BuscarPorID(eServicios array[], int TAM, int ID);
+//void eServicios_MostrarUno(eServicios servicios);
+//int eServicios_MostrarTodos(eServicios array[], int TAM);
+//int eServicios_MostrarDadosDeBaja(eServicios array[], int TAM);
+//eServicios eServicios_CargarDatos(void);
+//eServicios eServicios_ModificarUno(eServicios servicios);
+//int eServicios_Alta(eServicios array[], int TAM);
+//int eServicios_Baja(eServicios array[], int TAM);
+//int eServicios_Modificacion(eServicios array[], int TAM);
+//int eServicios_Sort(eServicios array[], int TAM, int criterio);
+
+#endif /* ESERVICIO_H_ */
+
+/*
+ * eTrabajos.c
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ *
+ *      id (autoincremental)
+ marcaBicicleta (Cadena) Validar
+ rodadoBicicleta
+ idServicio (debe existir) Validar
+ fecha (Validar d�a, mes y a�o)
+ */
+
+#include "eTrabajos.h"
+
+int eTrabajo_Inicializar(eTrabajos array[], int TAM)
+{
+	int i;
+	int retorno;
+
+	retorno = -1;
+
+	if (array != NULL && TAM > 0)
+	{
+		for (i = 0; i < TAM; i++)
+		{
+			array[i].isEmpty = LIBRE;
+		}
+		retorno = 0;
+	}
+	return retorno;
+}
+
+//*********************DAR DE ALTA UN TRABAJO***********************//
+
+eTrabajos eTrabajos_Alta(eTrabajos array[], int TAM,int *idIncremental, int *index)
+{
+	int retorno = 0;
+	eTrabajos auxTrabajos;
+
+	//BUSCO ESPACIO EN ARRAY
+	*index = eTrabajos_ObtenerIndexLibre(array, TAM);
+
+	//SI INDEX == -1 ARRAY LLENO
+	//SI INDEX != -1 TENGO EN INDEX POSICION DE ARRAY LIBRE
+
+	auxTrabajos = eTrabajos_CargarDatos(); //PIDO DATOS - CARGO Trabajos AUXILIAR
+
+	auxTrabajos.idTrabajo = idTabajo_obtenerID(*idIncremental); //SETEO ID UNICO - VARIABLE ESTATICA AUTOINCREMENTAL
+
+	retorno = 1;
+	return auxTrabajos;
+}
+
+eTrabajos eTrabajos_CargarDatos(void)
+{
+	/** CARGAR DATOS NECESARIOS PARA EL ALTA*/
+	char marcaBicicleta[25];
+	int rodadoBicicleta;
+	int idServicio;
+
+	eTrabajos auxiliar;
+	int dia;
+	int mes;
+	int anio;
+
+	/** PEDIR DATOS BICICLETA*/
+	printf("\ningrese marca de la bicicleta");
+	scanf("%s", &marcaBicicleta);
+	auxiliar.marcaBicicleta = marcaBicicleta;
+
+	/** PEDIR DATOS DEL RODADO*/
+	printf("\ningrese rodado de la bicicleta");
+	scanf("%s", &rodadoBicicleta);
+	auxiliar.rodadoBicicleta = rodadoBicicleta;
+
+
+	printf("elija uno de nuestros servicios:\n"
+			"1) Limpieza -- $250\n"
+			"2) Parche   -- $300\n"
+			"3) Centrado -- $400\n"
+			"4) Cadena   -- $350\n");
+	scanf("%d", auxiliar.idServicio);
+	while(auxiliar.idServicio<1 && auxiliar.idServicio>4)
+	{
+		printf("ERROR, elija nuevamente uno de nuestros servicios:\n"
+				"1) Limpieza -- $250\n"
+				"2) Parche   -- $300\n"
+				"3) Centrado -- $400\n"
+				"4) Cadena   -- $350\n");
+		scanf("%d", auxiliar.idServicio);
+	}
+
+
+	/** PEDIR DATOS DE FECHA*/
+
+	fechaValidada(auxiliar, &dia, &mes, &anio);
+
+	auxiliar.fecha{dia,mes,anio}
+	/** IMPORTANTE - NO CARGAR ID NI ESTADO - SE HACE EN EL ALTA */
+	return auxiliar;
+}
+
+idTabajo_obtenerID(int idIncremental)
+{
+	return idIncremental = idIncremental+1;
+}
+
+eTrabajos eTrabajos_ModificarUno(eTrabajos servicios)
+{
+	eTrabajos auxiliar;
+	eTrabajos trabajo;
+	int input;
+	int validacion;
+
+	/** MODIFICAR DATOS NECESARIOS PARA EL "MODIFICAR" */
+	printf("que desea mofificar:\n"
+			"1) Marca de la bicicleta\n"
+			"2) El servicio\n");
+	scanf("%d", &input);
+	switch(input)
+	{
+	case 1:
+		do{
+			printf("\ningrese marca de la bicicleta");
+			scanf("%c", &auxiliar.marcaBicicleta);
+			printf("esta seguro que desea cambiar la marca de la bicicleta a: %c\n"
+					"'0' si esta de acuerdo, '1' para descartar la modificacion\n", auxiliar.marcaBicicleta);
+			scanf("%d", &validacion);
+			if(validacion==0)
+			{
+				printf("la marca se modifico con exito\n");
+			}else{
+				if(validacion==1)
+				{
+					auxiliar.marcaBicicleta = 0;
+					printf("se anulo la modificacion\n");
+					break;
+				}else{
+					printf("ERROR, vuelva a intentarlo\n");
+				}
+			}
+		}while(validacion==0);
+		break;
+	case 2:
+		do{
+			printf("\ningrese marca de la bicicleta");
+			scanf("%c", &auxiliar.marcaBicicleta);
+			printf("esta seguro que desea cambiar la marca de la bicicleta a: %c\n"
+					"'0' si esta de acuerdo, '1' para descartar la modificacion", auxiliar.marcaBicicleta);
+			scanf("%d", &validacion);
+			if(validacion==0)
+			{
+				printf("la marca se modifico con exito");
+			}else{
+				if(validacion==1)
+				{
+					auxiliar.marcaBicicleta = 0;
+					printf("se anulo la modificacion");
+					break;
+				}else{
+					printf("ERROR, vuelva a intentarlo");
+				}
+			}
+
+		}while(validacion==0);
+		break;
+	}
+	/** IMPORTANTE - MODIFICAR EL AUXILIAR QUE ES LA COPIA DEL ORIGINAL */
+	return auxiliar;
+}
+
+int buscarIdTrabajo(eTrabajos list, int TAM, int *id)
+{
+	int retorno = -1;
+	int i;
+
+	//SI EXISTE EL ARRAY Y EL LIMITE ES VALIDO
+	if (list != NULL && TAM > 0)
+	{
+		//RECORRO TODO EL ARRAY
+		for (i = 0; i < TAM; i++)
+		{
+			//BUSCO QUE ESTE "OCUPADO" Y QUE CONCIDA EL ID QUE ESTOY BUSCANDO
+			if (list[i].idTrabajo == id && list[i].isEmpty == OCUPADO)
+			{
+				//SI ENCONTRE EL ID
+				//DEVUELVO EL INDEX DE DONDE ESTA EL ID BUSCADO Y SALGO
+				retorno = i;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+int listaTrabajos(eTrabajos lista,int TAM)
+{
+	int i;
+	int j;
+	eTrabajos aux;
+	int retorno;
+
+
+	for (i = 0; i < TAM - 1; i++)
+	{
+		for (j = i + 1; j < TAM; j++)
+		{
+			//PREGUNTO POR ESTADO "OCUPADO" DE AMBOS
+			if (lista[i].isEmpty == OCUPADO
+					&& lista[j].isEmpty == OCUPADO)
+			{
+				//CRITERIO DE ORDENAMIENTO
+				if (lista[i].fecha != lista[j].fecha)
+				{
+					if (lista[i].fecha > lista[j].fecha)
+					{
+						//INTERCAMBIO POSICIONES EN ARRAY
+						aux = lista[i];
+						lista[i] = lista[j];
+						lista[j] = aux;
+					}
+				}else{
+					if (strcmp(lista[i].marcaBicicleta,lista[j].marcaBicicleta)>0)//>0 se ordena de la A a la Z
+					{
+						//INTERCAMBIO POSICIONES EN ARRAY
+						aux = lista[i];
+						lista[i] = lista[j];
+						lista[j] = aux;
+					}
+				}
+			}
+		}
+	}
+	retorno = 1;
+	return retorno;
+}
+
+/*
+ * eTrabajoss.h
+ *
+ *  Created on: 13 may. 2021
+ *      Author: Ususario
+ */
+
+#ifndef eTrabajosS_H_
+#define eTrabajosS_H_
+#include "nexo.h"
+
+int eTrabajoss_ObtenerID(int* trabajos_idIncremental);
+int getStringLetras(char mensaje[],char input[]);
+int validacionIdServicios(eTrabajos array[], int TAM);
+void fechaValidada(eTrabajos array[], int TAM, int* dia, int* mes, int *anio);
+eTrabajos eTrabajos_HardcodearDatos(void);
+int eTrabajos_Alta(eTrabajos array[], int TAM);
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+eTrabajos eTrabajos_ModificarUno(eTrabajos servicios)
+{
+	eTrabajos auxiliar;
+	eTrabajos trabajo;
+	int input;
+	int validacion;
+
+	/** MODIFICAR DATOS NECESARIOS PARA EL "MODIFICAR" */
+	printf("que desea mofificar:\n"
+			"1) Marca de la bicicleta\n"
+			"2) El servicio\n");
+	scanf("%d", &input);
+	switch(input)
+	{
+	case 1:
+		do{
+			printf("\ningrese marca de la bicicleta");
+			scanf("%c", &auxiliar.marcaBicicleta);
+			printf("esta seguro que desea cambiar la marca de la bicicleta a: %c\n"
+					"'0' si esta de acuerdo, '1' para descartar la modificacion", auxiliar.marcaBicicleta);
+			scanf("%d", &validacion);
+			if(validacion==0)
+			{
+				printf("la marca se modifico con exito");
+			}else{
+				if(validacion==1)
+				{
+					printf("se anulo la modificacion");
+					break;
+				}else{
+					printf("ERROR, vuelva a intentarlo");
+				}
+			}
+		}while(validacion==0);
+		break;
+	case 2:
+		do{
+			printf("\ningrese marca de la bicicleta");
+			scanf("%c", &auxiliar.marcaBicicleta);
+			printf("esta seguro que desea cambiar la marca de la bicicleta a: %c\n"
+					"'0' si esta de acuerdo, '1' para descartar la modificacion", auxiliar.marcaBicicleta);
+			scanf("%d", &validacion);
+			if(validacion==0)
+			{
+				printf("la marca se modifico con exito");
+			}else{
+				if(validacion==1)
+				{
+					printf("se anulo la modificacion");
+					break;
+				}else{
+					printf("ERROR, vuelva a intentarlo");
+				}
+			}
+		}while(validacion==0);
+		break;
+	}
+	/** IMPORTANTE - MODIFICAR EL AUXILIAR QUE ES LA COPIA DEL ORIGINAL */
+	return auxiliar;
+}
+
+
+#endif /* eTrabajoS_H_ */
